@@ -45,10 +45,10 @@ The Safir API is a REST service using an organization `api-access-key` header, a
 ### 3. Model Safir-specific payloads and errors — complete locally
 
 - `SendMessageResponse`, `UploadFileResponse`, and `ErrorInfo` model documented results and error codes.
-- Message variants remain ordinary arrays to match the reference SDK's request style and the Safir API's evolving schema.
+- Serializable objects model standard text, inline-keyboard, and OTP payloads; template payloads remain arrays to match Safir's evolving schema.
 - Upload responses expose `file_id` for use in a subsequent message.
-- `request_id` is supplied explicitly by the caller so retries can reuse the same value.
-- Phone-number input is not normalized because the official docs show inconsistent examples.
+- Low-level `sendMessage()` accepts an explicit `request_id`; the convenience send methods generate one when omitted.
+- Whitespace is trimmed from phone numbers, and exact 11-digit Iranian mobile numbers beginning with `09` are normalized to `98...`.
 
 ### 4. Add Laravel support matching the reference UX — complete locally
 
@@ -59,17 +59,24 @@ The Safir API is a REST service using an organization `api-access-key` header, a
 
 ### 5. Documentation, examples, tests, CI, and first release — complete
 
-- English and Persian READMEs cover setup, message variants, uploads, Laravel, idempotency, errors, and the current release status.
+- English and Persian READMEs cover setup, message variants, uploads, Laravel, idempotency, errors, and release status.
 - Runnable examples cover text messages, OTPs, and upload-then-send media.
 - PHPUnit coverage uses mocked HTTP responses for request encoding, file uploads, Safir and HTTP errors, malformed responses, input validation, and Laravel provider/facade resolution.
 - GitHub Actions covers PHP 8.2 through 8.5 and Laravel 12 and 13 using matching Testbench versions. Local tests passed on PHP 8.5.13 with Laravel 13. Laravel 10 and 11 test dependencies are currently blocked by Composer security advisories, so CI keeps those advisory checks enabled and tests the installable Laravel lines.
 - Release `v0.2.0` includes phone-number normalization, convenience send methods, and serializable message payload objects.
-- Packagist metadata now lists `v0.2.0` with MIT and points to release commit `7a0dc4b`.
+- Packagist metadata lists `v0.2.0` with MIT and points to release commit `7a0dc4b`.
 - Packagist version and license badges are active in both READMEs.
+
+### 6. Complete documentation and publish patch release — in progress
+
+- Expand both READMEs with the full convenience-method signatures, payload fields, upload stream lifecycle, Laravel settings, response/error details, and troubleshooting.
+- Add runnable-example setup guides in English and Persian.
+- Update release notes and project status for `v0.2.1`.
+- Publish `v0.2.1` after the documentation commit passes repository CI, then verify the tag and Packagist metadata.
 
 ## Release status
 
-- Current public release: `v0.2.0` (MIT), published 2026-11-24.
+- Current public release before phase 6: `v0.2.0` (MIT), published 2026-11-24.
 - Package install command: `composer require erfanvahabpour/bale-safir-sdk`.
 - Follow-up releases should incorporate user feedback and updates to Safir's API contract; the open documentation ambiguities below remain tracked.
 

@@ -14,13 +14,15 @@
 
 ## وضعیت پروژه
 
-نسخهٔ عمومی جاری `0.2.0` است. ممکن است API تا انتشار نسخهٔ `1.0.0` تغییر کند. مجوز پروژه MIT است؛ متن کامل در [LICENSE](LICENSE) آمده است.
+نسخهٔ عمومی جاری `0.2.1` است. ممکن است API تا انتشار نسخهٔ `1.0.0` تغییر کند. مجوز پروژه MIT است؛ متن کامل در [LICENSE](LICENSE) آمده است.
 
 ## قابلیت‌ها
 
 - ارسال پیام متنی، رسانه‌ای، رمزدار، OTP، قالبی و دارای دکمه شیشه‌ای.
+- استفاده از متدهای سادهٔ `sendOtp()`، `sendText()` و `sendSecureText()` یا ساخت مستقیم payload آرایه‌ای.
+- ساخت payloadهای قابل‌سریال‌سازی با کلاس‌های `MessageData`، `Message`، `ReplyMarkup`، `InlineKeyboardButton` و `OTPMessage`.
 - بارگذاری فایل و استفاده از `file_id` دریافتی در پیام.
-- ارسال `request_id` برای جلوگیری از تکرار درخواست هنگام تلاش مجدد.
+- استفادهٔ دوباره از `request_id` برای جلوگیری از ارسال تکراری هنگام تلاش مجدد برای همان پیام.
 - پاسخ‌های تایپ‌شده و دسترسی به جزئیات خطاهای سفیر.
 - استفاده مستقیم از SDK یا اتصال اختیاری آن به لاراول با Service Provider و Facade.
 
@@ -30,7 +32,7 @@
 
 - PHP نسخهٔ 8.2 یا جدیدتر
 - Guzzle نسخهٔ 7.8 یا جدیدتر
-- اتصال لاراول: نصب بودن `illuminate/support` در برنامه
+- اتصال اختیاری لاراول: نصب بودن `illuminate/support` در برنامه. CI نسخه‌های لاراول 12 و 13 را پوشش می‌دهد.
 
 ## نصب
 
@@ -62,7 +64,25 @@ $api = new Api(
 );
 ```
 
-PHP ساده فایل `.env` را خودکار نمی‌خواند. فایل محیط را با loader برنامه بارگذاری کنید یا مقادیر را مستقیم به `Api` بدهید.
+PHP ساده فایل `.env` را خودکار نمی‌خواند. فایل محیط را با loader برنامه بارگذاری کنید یا مقادیر را مستقیم به `Api` بدهید. کلید را در متغیر محیطی یا secret manager نگه دارید و آن را commit نکنید.
+
+آدرس API و timeoutها را هم می‌توانید هنگام ساخت client تنظیم کنید:
+
+```php
+$api = new Api(
+    baseUrl: 'https://safir.bale.ai/api/v3',
+    timeout: 30,
+    connectTimeout: 10,
+);
+```
+
+کلید دسترسی در هدر HTTP با نام `api-access-key` ارسال می‌شود و در URL قرار نمی‌گیرد.
+
+## شماره تلفن و شناسهٔ درخواست
+
+سفیر شمارهٔ ایران را بدون جداکننده و با قالب بین‌المللی `98...` یا `+98...` می‌خواهد. SDK شمارهٔ موبایل محلیِ دقیقاً ۱۱ رقمی را که با `09` شروع شود به `98...` تبدیل می‌کند و فاصلهٔ ابتدا و انتهای شماره را حذف می‌کند. قالب‌های دیگر بدون تغییر می‌مانند و ممکن است از طرف سفیر رد شوند.
+
+متدهای ساده در صورت ندادن `requestId`، شناسهٔ تصادفی می‌سازند. برای تلاش مجدد همان پیام، همان `requestId` و همان محتوای پیام را دوباره بفرستید. برای پیام جدید شناسهٔ تازه بسازید. متد سطح پایین `sendMessage()` خودش شناسه تولید نمی‌کند.
 
 ## ارسال پیام متنی
 
@@ -94,7 +114,15 @@ if ($response->isSuccessful()) {
 
 ## متدهای ساده و آبجکت‌های پیام
 
-SDK متدهای `sendOtp()`، `sendText()` و `sendSecureText()` را هم دارد. اگر `requestId` داده نشود، شناسهٔ تصادفی ساخته می‌شود. `sendOtp()` در حالت پیش‌فرض یک رمز عددی شش‌رقمی تصادفی می‌سازد؛ برای تلاش مجدد با مقادیر ثابت، رمز و شناسهٔ درخواست را خودتان بدهید.
+متدهای ساده پاسخ `SendMessageResponse` می‌دهند:
+
+| متد | ورودی‌های اجباری | ورودی‌های اختیاری و مقدار پیش‌فرض |
+| --- | --- | --- |
+| `sendOtp($phoneNumber, $code = null, $isSecure = false, $requestId = null)` | `phoneNumber` | `code`: رمز عددی تصادفی شش‌رقمی؛ `isSecure`: `false`؛ `requestId`: شناسهٔ تصادفی |
+| `sendText($phoneNumber, $text, $replyMarkup = null, $isSecure = false, $fileId = null, $requestId = null)` | `phoneNumber`، `text` | `replyMarkup`: `null`؛ `isSecure`: `false`؛ `fileId`: `null`؛ `requestId`: شناسهٔ تصادفی |
+| `sendSecureText($phoneNumber, $text, $replyMarkup = null, $fileId = null, $requestId = null)` | `phoneNumber`، `text` | `replyMarkup`: `null`؛ `fileId`: `null`؛ `requestId`: شناسهٔ تصادفی؛ همیشه `is_secure` را `true` می‌کند |
+
+رمز پیش‌فرض `sendOtp()` با `random_int()` ساخته می‌شود. برای تلاش مجدد با payload ثابت، رمز و شناسهٔ درخواست را خودتان بدهید.
 
 ```php
 use EFive\Bale\Safir\Api;
@@ -111,7 +139,34 @@ $api->sendSecureText('09123456789', 'پیام محرمانه');
 $api->sendOtp('09123456789');
 ```
 
-کلاس‌های `MessageData`، `Message`، `ReplyMarkup`، `InlineKeyboardButton` و `OTPMessage` آبجکت‌های قابل‌سریال‌سازی در فضای نام `EFive\Bale\Safir\Objects` هستند. می‌توانید یک `MessageData` را در فیلد `message_data` به `sendMessage()` بدهید یا از این آبجکت‌ها همراه متدهای ساده استفاده کنید.
+`sendText()` یک آبجکت `ReplyMarkup` یا آرایه با ساختار API می‌پذیرد. با `fileId` یک فایل بارگذاری‌شده را پیوست کنید؛ در این حالت `text` توضیح فایل است.
+
+### آبجکت‌های payload
+
+همهٔ کلاس‌ها در فضای نام `EFive\Bale\Safir\Objects` هستند. هر کلاس `toArray()` دارد و `JsonSerializable` را پیاده‌سازی می‌کند. نام ویژگی‌های camelCase در JSON به snake_case تبدیل می‌شود.
+
+| آبجکت | فیلدها |
+| --- | --- |
+| `MessageData` | `message: ?Message`، `otpMessage: ?OTPMessage`، `isSecure: bool` |
+| `Message` | `text: ?string`، `fileId: ?string`، `replyMarkup: ?ReplyMarkup\|array`، `copyText: ?string` |
+| `ReplyMarkup` | `inlineKeyboard`: فهرست ردیف‌ها؛ هر ردیف شامل آبجکت `InlineKeyboardButton` یا آرایه است. برای آرایهٔ کامل API از `ReplyMarkup::fromArray()` استفاده کنید. |
+| `InlineKeyboardButton` | `text: string` و فیلدهای اختیاری `url: ?string`، `webApp: ?array` (مانند `['url' => 'https://example.com/app']`)، `copyText: ?string`. هر دکمه باید دست‌کم یک عملکرد داشته باشد. |
+| `OTPMessage` | `otp: string\|int`؛ فقط رقم می‌پذیرد. رشتهٔ کد صفرهای ابتدای آن را نگه می‌دارد. |
+
+می‌توانید `MessageData` را مستقیماً به `sendMessage()` بدهید:
+
+```php
+use EFive\Bale\Safir\Objects\Message;
+use EFive\Bale\Safir\Objects\MessageData;
+
+$response = $api->sendMessage([
+    'phone_number' => '989123456789',
+    'request_id' => 'stable-id-for-this-send',
+    'message_data' => new MessageData(
+        message: new Message(text: 'سلام از یک payload object'),
+    ),
+]);
+```
 
 ## انواع پیام
 
@@ -150,9 +205,9 @@ $templateData = [
 ];
 ```
 
-یکی از این آرایه‌ها را به‌عنوان مقدار `message_data` به `sendMessage()` بدهید. پیام رسانه‌ای از `file_id` درون `message` استفاده می‌کند و می‌تواند متن توضیحی هم داشته باشد.
+یکی از این آرایه‌ها را به‌عنوان مقدار `message_data` به `sendMessage()` بدهید. پیام رسانه‌ای از `file_id` درون `message` استفاده می‌کند و می‌تواند متن توضیحی هم داشته باشد. آبجکت‌های payload برای متن، OTP و دکمه‌های شیشه‌ای هستند؛ برای `template_message` از آرایه استفاده کنید.
 
-دکمه‌های شیشه‌ای می‌توانند WebApp را باز کنند یا متنی را کپی کنند:
+هر دکمه باید دست‌کم یکی از `url`، `web_app` یا `copy_text` را داشته باشد. دکمه‌های شیشه‌ای می‌توانند WebApp را باز کنند یا متنی را کپی کنند:
 
 ```php
 ['text' => 'باز کردن مینی‌اپ', 'web_app' => ['url' => 'https://example.com/app']],
@@ -161,7 +216,7 @@ $templateData = [
 
 ## بارگذاری فایل و ارسال آن
 
-`InputFile::fromPath()` فایل محلی را به‌صورت stream به سرویس multipart سفیر می‌فرستد. مستندات API حداکثر حجم ۵۰۰ مگابایت را ذکر می‌کند.
+`uploadFile()` درخواست multipart می‌فرستد و `UploadFileResponse` برمی‌گرداند. مستندات API حداکثر حجم ۵۰۰ مگابایت را ذکر می‌کند. `InputFile::fromPath()` فایل محلی را stream می‌کند؛ `fromStream()` یک منبع stream باز و `fromContents()` یک رشتهٔ درون حافظه می‌گیرد.
 
 ```php
 use EFive\Bale\Safir\Api;
@@ -185,7 +240,7 @@ $sent = $api->sendMessage([
 ]);
 ```
 
-برای stream باز یا محتوای حافظه نیز می‌توانید از `InputFile::fromStream()` و `InputFile::fromContents()` استفاده کنید.
+برای `InputFile::fromStream()`، stream را تا پایان درخواست باز نگه دارید و بعد از اتمام کار خودتان ببندید. `InputFile::fromPath()` فایل را هنگام بارگذاری باز می‌کند.
 
 ## لاراول
 
@@ -220,12 +275,29 @@ $response = Safir::client('marketing')->sendMessage([
 ]);
 ```
 
+تنظیمات `base_url`، `timeout` (پیش‌فرض ۳۰ ثانیه) و `connect_timeout` (پیش‌فرض ۱۰ ثانیه) نیز پشتیبانی می‌شوند. `Safir::client()` یک نمونه از `Api` برمی‌گرداند؛ Facade متدهای ارسال و بارگذاری کلاینت پیش‌فرض را هم مستقیم در دسترس می‌گذارد.
+
 ## خطاها و پاسخ‌ها
 
-- خطای HTTP یا شبکه باعث پرتاب استثنای SDK می‌شود. `SafirResponseException` کد HTTP، دادهٔ رمزگشایی‌شده و متن خام پاسخ را ارائه می‌کند.
-- پاسخ HTTP موفق هم ممکن است دارای `error_data` سفیر باشد؛ `isSuccessful()` و `getErrorData()` را در `SendMessageResponse` بررسی کنید.
-- `UploadFileResponse` متدهای `getFileId()`، `getError()` و `getErrorInfo()` را دارد.
-- کلید دسترسی در هدر `api-access-key` فرستاده می‌شود و در URL قرار نمی‌گیرد.
+- پاسخ HTTP ناموفق یا JSON نامعتبر باعث `SafirResponseException` می‌شود. این استثنا `getHttpStatusCode()`، `getResponseData()` و `getRawResponse()` دارد.
+- خطای ارتباط شبکه `SafirNetworkException` می‌دهد. پیام این استثنا کلید دسترسی یا بدنهٔ درخواست را شامل نمی‌شود.
+- پاسخ HTTP با وضعیت ۲xx لزوماً به معنی پذیرفته‌شدن پیام نیست. `SendMessageResponse::isSuccessful()`، `hasErrors()`، `getMessageId()` و `getErrorData()` را بررسی کنید.
+- هر `ErrorInfo` متدهای `getPhoneNumber()`، `getCode()`، `getCodeName()` و `getDescription()` را دارد.
+- `UploadFileResponse` متدهای `isSuccessful()`، `getFileId()`، `getError()` و `getErrorInfo()` را دارد و هر دو فیلد `error` و `error_data` را می‌پذیرد.
+
+کدهای خطای ارسال مستندشده:
+
+| کد | نام | معنی |
+| --- | --- | --- |
+| 2 | `InternalServerError` | خطای داخلی سرویس |
+| 3 | `RateLimitExceeded` | محدودیت تعداد ارسال |
+| 4 | `InvalidInput` | ورودی JSON نامعتبر |
+| 8 | `InvalidPhone` | شمارهٔ مقصد نامعتبر |
+| 17 | `NotBaleUser` | گیرنده حساب بله ندارد |
+| 20 | `PaymentRequired` | اعتبار کافی نیست |
+| 21 | `MaximumContactLimitReached` | سقف مخاطبان بازو پر شده است |
+
+شرح خطا و رفتار HTTP ممکن است میان endpointها فرق کند؛ برای قرارداد نهایی به مستندات فعلی سفیر مراجعه کنید.
 
 ## توسعه
 
@@ -233,6 +305,24 @@ $response = Safir::client('marketing')->sendMessage([
 composer install
 composer test
 ```
+
+نمونه‌های اجرایی درخواست واقعی به سفیر می‌فرستند؛ آن‌ها را فقط با بازو و شماره‌ای که مجاز به استفاده از آن هستید اجرا کنید. نمونه‌ها متغیرهای `BALE_SAFIR_API_ACCESS_KEY`، `BALE_SAFIR_BOT_ID` و `BALE_SAFIR_PHONE_NUMBER` را می‌خوانند:
+
+```bash
+php Examples/sendMessage.php
+BALE_SAFIR_OTP=123456 php Examples/sendOtp.php
+BALE_SAFIR_FILE=/path/to/photo.jpg php Examples/uploadAndSendMedia.php
+```
+
+نمونهٔ OTP متغیر `BALE_SAFIR_OTP` را هم می‌خواند و نمونهٔ رسانه به مسیر محلی `BALE_SAFIR_FILE` نیاز دارد. راهنمای bash و PowerShell به [فارسی](Examples/README.fa.md) و [انگلیسی](Examples/README.md) موجود است. کلیدها را در محیط یا secret manager نگه دارید و commit نکنید.
+
+## عیب‌یابی
+
+- `MissingApiAccessKeyException`: متغیر `BALE_SAFIR_API_ACCESS_KEY` را تنظیم کنید یا `apiAccessKey` را به `Api` بدهید.
+- `MissingBotIdException`: متغیر `BALE_SAFIR_BOT_ID` را تنظیم کنید یا `botId` را به `Api` بدهید.
+- `InvalidPhone` (`8`): شماره را بدون جداکننده و با قالب `98...` یا `+98...` بفرستید. شماره موبایل محلی معمولی که با `09` شروع می‌شود خودکار تبدیل می‌شود.
+- پاسخ دارای `error_data` ممکن است وضعیت HTTP برابر ۲xx داشته باشد؛ نتیجهٔ آبجکت پاسخ را بررسی کنید.
+- قالب پیام باید در پنل تجاری بله از قبل ساخته و تأیید شده باشد و نام‌های `text_fields` باید با قالب هم‌خوانی کنند.
 
 ## مستندات سفیر
 

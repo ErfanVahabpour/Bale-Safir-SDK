@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 — 2026-11-24
+
+- Expand the English and Persian READMEs with complete method signatures, payload fields, upload lifecycle, Laravel configuration, errors, and troubleshooting.
+- Add Bash and PowerShell example guides in English and Persian.
+- Clarify request ID retry behavior, local phone-number normalization, and secret handling.
+
 ## 0.2.0 — 2026-11-24
 
 - Add `sendOtp()`, `sendText()`, and `sendSecureText()` convenience methods.
