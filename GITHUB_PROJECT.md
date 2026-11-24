@@ -7,7 +7,7 @@ This file records the repository profile after the initial page setup.
 - Repository: [ErfanVahabpour/Bale-Safir-SDK](https://github.com/ErfanVahabpour/Bale-Safir-SDK)
 - Visibility: Public
 - Default branch: `main`
-- State: Public repository profile is configured. The SDK implementation, tests, CI workflow, examples, and updated documentation are in the local checkout and have not been pushed yet.
+- State: Public repository profile is configured; the SDK implementation, tests, CI workflow, examples, and release documentation are pushed to `main`.
 - Description, homepage, and topics: set as listed below.
 - License: MIT; reflected in `composer.json` and `LICENSE`.
 - Repository Issues and Projects: enabled.
@@ -43,13 +43,13 @@ MIT was selected for the Safir SDK and added as `LICENSE`; the reference SDK's B
 - Support documentation: `https://docs.bale.ai/safir`
 - Product page: `https://bale.ai/safir`
 - Vendor / author metadata: mirror the existing Bale-Bot-SDK's author details if this is the same maintainer.
-- Package-name availability: the Packagist package endpoint returned 404 immediately before this initial release attempt (2026-11-24).
+- Published package: [erfanvahabpour/bale-safir-sdk](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk), first version `v0.1.0` (MIT), published 2026-11-24. A clean Composer install was verified.
 
 ## Repository presentation
 
-- `README.md` and `README.fa.md` now provide matching English/Persian setup guides and describe the unreleased local implementation.
+- `README.md` and `README.fa.md` provide matching English/Persian setup guides for the public `v0.1.0` release.
 - `PLAN.md` tracks implementation progress and release work.
 - `Examples/` contains standalone samples for text, OTP, and media messages.
 - `.github/workflows/ci.yml` runs the PHPUnit suite across PHP 8.2–8.5 and Laravel 12–13; its passing status is shown in both READMEs. Laravel 10–11 test dependencies are blocked by Composer's security policy.
-- Packagist version and license badges are prepared in both READMEs for the first release.
+- Packagist version and license badges are active in both READMEs.
 - Keep the repo public and Issues enabled; use GitHub Projects only if a tracked roadmap board is useful.

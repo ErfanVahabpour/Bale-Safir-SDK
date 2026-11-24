@@ -57,14 +57,21 @@ The Safir API is a REST service using an organization `api-access-key` header, a
 - Laravel configuration uses Safir-specific keys and does not use `BALE_BOT_TOKEN`.
 - Bot-only commands, polling, events, payments, and chat APIs are out of scope.
 
-### 5. Documentation, examples, tests, and CI — complete locally; release work remains
+### 5. Documentation, examples, tests, CI, and first release — complete
 
 - English and Persian READMEs cover setup, message variants, uploads, Laravel, idempotency, errors, and the current release status.
 - Runnable examples cover text messages, OTPs, and upload-then-send media.
 - PHPUnit coverage uses mocked HTTP responses for request encoding, file uploads, Safir and HTTP errors, malformed responses, input validation, and Laravel provider/facade resolution.
 - GitHub Actions covers PHP 8.2 through 8.5 and Laravel 12 and 13 using matching Testbench versions. Local tests passed on PHP 8.5.13 with Laravel 13. Laravel 10 and 11 test dependencies are currently blocked by Composer security advisories, so CI keeps those advisory checks enabled and tests the installable Laravel lines.
-- Initial `0.1.0` release metadata and changelog are prepared; register the repository on Packagist and verify Composer installation.
-- After publication, verify version/license badges and update repository status to released.
+- Release `v0.1.0` is tagged and pushed; the package is published at [Packagist](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk).
+- A clean temporary project successfully installed `erfanvahabpour/bale-safir-sdk:0.1.0` and generated Composer autoload files.
+- Packagist version and license badges are active in both READMEs.
+
+## Release status
+
+- Current public release: `v0.1.0` (MIT), published 2026-11-24.
+- Package install command: `composer require erfanvahabpour/bale-safir-sdk`.
+- Follow-up releases should incorporate user feedback and updates to Safir's API contract; the open documentation ambiguities below remain tracked.
 
 ## Suggested initial source layout
 
