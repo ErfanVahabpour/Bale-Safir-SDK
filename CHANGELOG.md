@@ -1,0 +1,8 @@
+# Changelog
+
+## 0.1.0 — 2026-11-24
+
+- Initial public release of the Bale Safir PHP SDK.
+- Add `sendMessage()` and multipart `uploadFile()` support.
+- Add typed response/error objects, `InputFile`, and Laravel provider/facade support.
+- Add English and Persian guides, runnable examples, PHPUnit coverage, and GitHub Actions CI.

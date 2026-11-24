@@ -4,6 +4,8 @@
 
 **An unofficial PHP SDK for the Bale Safir messaging API, with file uploads and optional Laravel integration.**
 
+[![CI](https://github.com/ErfanVahabpour/Bale-Safir-SDK/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ErfanVahabpour/Bale-Safir-SDK/actions/workflows/ci.yml) [![Latest Version](https://img.shields.io/packagist/v/erfanvahabpour/bale-safir-sdk.svg?style=flat-square)](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk) [![License](https://img.shields.io/packagist/l/erfanvahabpour/bale-safir-sdk.svg?style=flat-square)](LICENSE)
+
 [English](README.md) · [فارسی](README.fa.md)
 
 </div>
@@ -12,7 +14,7 @@
 
 ## Project status
 
-The SDK source and examples are being prepared in this repository. It has not been released on Packagist, and its public API may change before the first tagged release. The project is licensed under MIT; see [LICENSE](LICENSE).
+The first public release is `0.1.0`. The API may change before `1.0.0`. The project is licensed under MIT; see [LICENSE](LICENSE).
 
 ## What it supports
 
@@ -32,13 +34,11 @@ This package targets Safir's business messaging REST API. It does not implement 
 
 ## Installation
 
-The package is not published on Packagist yet. After release, install it with:
-
 ```bash
 composer require erfanvahabpour/bale-safir-sdk
 ```
 
-For a local checkout, install its dependencies with `composer install`.
+For development from a local checkout, install dependencies with `composer install`.
 
 ## Configuration
 

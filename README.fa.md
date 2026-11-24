@@ -4,6 +4,8 @@
 
 **یک SDK غیررسمی PHP برای وب‌سرویس پیام‌رسانی سفیر بله، همراه با بارگذاری فایل و اتصال اختیاری به لاراول.**
 
+[![CI](https://github.com/ErfanVahabpour/Bale-Safir-SDK/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ErfanVahabpour/Bale-Safir-SDK/actions/workflows/ci.yml) [![Latest Version](https://img.shields.io/packagist/v/erfanvahabpour/bale-safir-sdk.svg?style=flat-square)](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk) [![License](https://img.shields.io/packagist/l/erfanvahabpour/bale-safir-sdk.svg?style=flat-square)](LICENSE)
+
 [English](README.md) · [فارسی](README.fa.md)
 
 </div>
@@ -12,7 +14,7 @@
 
 ## وضعیت پروژه
 
-کد SDK و نمونه‌ها در این مخزن در حال آماده‌سازی هستند. بسته هنوز در Packagist منتشر نشده و ممکن است API عمومی آن تا انتشار نخست تغییر کند. مجوز پروژه MIT است؛ متن کامل در [LICENSE](LICENSE) آمده است.
+نخستین نسخهٔ عمومی `0.1.0` است. ممکن است API تا انتشار نسخهٔ `1.0.0` تغییر کند. مجوز پروژه MIT است؛ متن کامل در [LICENSE](LICENSE) آمده است.
 
 ## قابلیت‌ها
 
@@ -32,13 +34,11 @@
 
 ## نصب
 
-بسته هنوز در Packagist منتشر نشده است. پس از انتشار، دستور نصب چنین خواهد بود:
-
 ```bash
 composer require erfanvahabpour/bale-safir-sdk
 ```
 
-برای نصب وابستگی‌های یک checkout محلی از `composer install` استفاده کنید.
+برای توسعه از روی checkout محلی، وابستگی‌ها را با `composer install` نصب کنید.
 
 ## تنظیمات
 

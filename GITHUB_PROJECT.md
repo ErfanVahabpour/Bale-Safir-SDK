@@ -43,13 +43,13 @@ MIT was selected for the Safir SDK and added as `LICENSE`; the reference SDK's B
 - Support documentation: `https://docs.bale.ai/safir`
 - Product page: `https://bale.ai/safir`
 - Vendor / author metadata: mirror the existing Bale-Bot-SDK's author details if this is the same maintainer.
-- Package-name availability: no package currently appears at this name on Packagist (checked 2026-11-24); recheck at publication time.
+- Package-name availability: the Packagist package endpoint returned 404 immediately before this initial release attempt (2026-11-24).
 
 ## Repository presentation
 
 - `README.md` and `README.fa.md` now provide matching English/Persian setup guides and describe the unreleased local implementation.
 - `PLAN.md` tracks implementation progress and release work.
 - `Examples/` contains standalone samples for text, OTP, and media messages.
-- `.github/workflows/ci.yml` runs the PHPUnit suite across PHP 8.2–8.5 and Laravel 12–13. Laravel 10–11 test dependencies are blocked by Composer's security policy. Add a badge after the workflow passes on GitHub.
-- Packagist version, PHP version, Laravel compatibility, license, and download badges after the first release.
+- `.github/workflows/ci.yml` runs the PHPUnit suite across PHP 8.2–8.5 and Laravel 12–13; its passing status is shown in both READMEs. Laravel 10–11 test dependencies are blocked by Composer's security policy.
+- Packagist version and license badges are prepared in both READMEs for the first release.
 - Keep the repo public and Issues enabled; use GitHub Projects only if a tracked roadmap board is useful.
