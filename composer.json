@@ -32,11 +32,11 @@
         "guzzlehttp/psr7": "^2.7"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.38 || ^10.0 || ^11.0",
+        "orchestra/testbench": "^10.0 || ^11.0",
         "phpunit/phpunit": "^10.5 || ^11.5"
     },
     "suggest": {
-        "illuminate/support": "Required for Laravel integration; CI covers Laravel 10, 12, and 13."
+        "illuminate/support": "Required for Laravel integration; CI covers Laravel 12 and 13."
     },
     "autoload": {
         "psr-4": {

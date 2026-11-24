@@ -62,7 +62,7 @@ The Safir API is a REST service using an organization `api-access-key` header, a
 - English and Persian READMEs cover setup, message variants, uploads, Laravel, idempotency, errors, and the current release status.
 - Runnable examples cover text messages, OTPs, and upload-then-send media.
 - PHPUnit coverage uses mocked HTTP responses for request encoding, file uploads, Safir and HTTP errors, malformed responses, input validation, and Laravel provider/facade resolution.
-- GitHub Actions covers PHP 8.2 through 8.5 and Laravel 10, 12, and 13 using matching Testbench versions. Local tests passed on PHP 8.5.13 with Laravel 13. Laravel 11 is omitted because Composer's security-advisory policy rejected its test dependencies; CI does not disable that policy.
+- GitHub Actions covers PHP 8.2 through 8.5 and Laravel 12 and 13 using matching Testbench versions. Local tests passed on PHP 8.5.13 with Laravel 13. Laravel 10 and 11 test dependencies are currently blocked by Composer security advisories, so CI keeps those advisory checks enabled and tests the installable Laravel lines.
 - Before a release, push the reviewed source and publish the package.
 - Add Packagist badges and release metadata only after publication.
 
