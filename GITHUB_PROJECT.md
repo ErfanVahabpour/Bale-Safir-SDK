@@ -43,11 +43,11 @@ MIT was selected for the Safir SDK and added as `LICENSE`; the reference SDK's B
 - Support documentation: `https://docs.bale.ai/safir`
 - Product page: `https://bale.ai/safir`
 - Vendor / author metadata: mirror the existing Bale-Bot-SDK's author details if this is the same maintainer.
-- Published package: [erfanvahabpour/bale-safir-sdk](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk), first version `v0.1.0` (MIT), published 2026-11-24. A clean Composer install was verified.
+- Published package: [erfanvahabpour/bale-safir-sdk](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk), current release `v0.2.0` (MIT), published 2026-11-24.
 
 ## Repository presentation
 
-- `README.md` and `README.fa.md` provide matching English/Persian setup guides for the public `v0.1.0` release.
+- `README.md` and `README.fa.md` provide matching English/Persian setup guides for the public `v0.2.0` release.
 - `PLAN.md` tracks implementation progress and release work.
 - `Examples/` contains standalone samples for text, OTP, and media messages.
 - `.github/workflows/ci.yml` runs the PHPUnit suite across PHP 8.2–8.5 and Laravel 12–13; its passing status is shown in both READMEs. Laravel 10–11 test dependencies are blocked by Composer's security policy.

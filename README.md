@@ -14,7 +14,7 @@
 
 ## Project status
 
-The first public release is `0.1.0`. The API may change before `1.0.0`. The project is licensed under MIT; see [LICENSE](LICENSE).
+The current public release is `0.2.0`. The API may change before `1.0.0`. The project is licensed under MIT; see [LICENSE](LICENSE).
 
 ## What it supports
 
@@ -91,6 +91,27 @@ if ($response->isSuccessful()) {
 ```
 
 Use the same `request_id` when retrying the same logical send. Generate and persist a new ID for a different message.
+
+## Convenience methods and payload objects
+
+The SDK also provides `sendOtp()`, `sendText()`, and `sendSecureText()`. They generate a random request ID when one is omitted. `sendOtp()` generates a random six-digit numeric code by default; pass the code and request ID explicitly when you need stable values for retries.
+
+```php
+use EFive\Bale\Safir\Api;
+use EFive\Bale\Safir\Objects\InlineKeyboardButton;
+use EFive\Bale\Safir\Objects\ReplyMarkup;
+
+$api = new Api();
+$markup = new ReplyMarkup([
+    [new InlineKeyboardButton('Open Bale', url: 'https://bale.ai')],
+]);
+
+$api->sendText('09123456789', 'Hello from Safir', $markup);
+$api->sendSecureText('09123456789', 'A private message');
+$api->sendOtp('09123456789');
+```
+
+`MessageData`, `Message`, `ReplyMarkup`, `InlineKeyboardButton`, and `OTPMessage` are serializable payload objects in `EFive\Bale\Safir\Objects`. You can pass a `MessageData` instance as `message_data` to `sendMessage()` or use the objects with the convenience methods.
 
 ## Message variants
 

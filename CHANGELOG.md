@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 — 2026-11-24
 
+- Add `sendOtp()`, `sendText()`, and `sendSecureText()` convenience methods.
+- Add serializable `MessageData`, `Message`, `ReplyMarkup`, `InlineKeyboardButton`, and `OTPMessage` payload objects.
 - Normalize local Iranian mobile numbers beginning with `09` to Safir's required `98...` format.
 
 ## 0.1.0 — 2026-11-24

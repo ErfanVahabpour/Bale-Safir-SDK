@@ -14,7 +14,7 @@
 
 ## وضعیت پروژه
 
-نخستین نسخهٔ عمومی `0.1.0` است. ممکن است API تا انتشار نسخهٔ `1.0.0` تغییر کند. مجوز پروژه MIT است؛ متن کامل در [LICENSE](LICENSE) آمده است.
+نسخهٔ عمومی جاری `0.2.0` است. ممکن است API تا انتشار نسخهٔ `1.0.0` تغییر کند. مجوز پروژه MIT است؛ متن کامل در [LICENSE](LICENSE) آمده است.
 
 ## قابلیت‌ها
 
@@ -91,6 +91,27 @@ if ($response->isSuccessful()) {
 ```
 
 هنگام تلاش مجدد برای همان ارسال، همان `request_id` را استفاده کنید. برای پیام جدید، شناسهٔ جدید بسازید و آن را نگه‌داری کنید.
+
+## متدهای ساده و آبجکت‌های پیام
+
+SDK متدهای `sendOtp()`، `sendText()` و `sendSecureText()` را هم دارد. اگر `requestId` داده نشود، شناسهٔ تصادفی ساخته می‌شود. `sendOtp()` در حالت پیش‌فرض یک رمز عددی شش‌رقمی تصادفی می‌سازد؛ برای تلاش مجدد با مقادیر ثابت، رمز و شناسهٔ درخواست را خودتان بدهید.
+
+```php
+use EFive\Bale\Safir\Api;
+use EFive\Bale\Safir\Objects\InlineKeyboardButton;
+use EFive\Bale\Safir\Objects\ReplyMarkup;
+
+$api = new Api();
+$markup = new ReplyMarkup([
+    [new InlineKeyboardButton('باز کردن بله', url: 'https://bale.ai')],
+]);
+
+$api->sendText('09123456789', 'پیام آزمایشی', $markup);
+$api->sendSecureText('09123456789', 'پیام محرمانه');
+$api->sendOtp('09123456789');
+```
+
+کلاس‌های `MessageData`، `Message`، `ReplyMarkup`، `InlineKeyboardButton` و `OTPMessage` آبجکت‌های قابل‌سریال‌سازی در فضای نام `EFive\Bale\Safir\Objects` هستند. می‌توانید یک `MessageData` را در فیلد `message_data` به `sendMessage()` بدهید یا از این آبجکت‌ها همراه متدهای ساده استفاده کنید.
 
 ## انواع پیام
 

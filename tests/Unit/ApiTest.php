@@ -9,6 +9,8 @@ use EFive\Bale\Safir\Exceptions\MissingBotIdException;
 use EFive\Bale\Safir\Exceptions\SafirNetworkException;
 use EFive\Bale\Safir\Exceptions\SafirResponseException;
 use EFive\Bale\Safir\FileUpload\InputFile;
+use EFive\Bale\Safir\Objects\InlineKeyboardButton;
+use EFive\Bale\Safir\Objects\ReplyMarkup;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
@@ -111,6 +113,83 @@ final class ApiTest extends TestCase
             '989123456789',
             json_decode((string) $history[0]['request']->getBody(), true, 512, JSON_THROW_ON_ERROR)['phone_number']
         );
+    }
+
+    public function testSendOtpGeneratesSixDigitCodeAndRequestIdByDefault(): void
+    {
+        $history = [];
+        $api = $this->makeApi([
+            new Response(200, [], '{"message_id":"otp-message-123"}'),
+        ], $history);
+
+        $response = $api->sendOtp('09123456789');
+        $payload = json_decode((string) $history[0]['request']->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        self::assertTrue($response->isSuccessful());
+        self::assertSame('989123456789', $payload['phone_number']);
+        self::assertMatchesRegularExpression('/\\A\\d{6}\\z/', $payload['message_data']['otp_message']['otp']);
+        self::assertMatchesRegularExpression('/\\A[a-f0-9]{32}\\z/', $payload['request_id']);
+        self::assertFalse($payload['message_data']['is_secure']);
+    }
+
+    public function testSendOtpUsesProvidedCodeSecurityAndRequestId(): void
+    {
+        $history = [];
+        $api = $this->makeApi([
+            new Response(200, [], '{"message_id":"otp-message-123"}'),
+        ], $history);
+
+        $response = $api->sendOtp('989123456789', '001234', true, 'otp-request-123');
+        $payload = json_decode((string) $history[0]['request']->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        self::assertTrue($response->isSuccessful());
+        self::assertSame('001234', $payload['message_data']['otp_message']['otp']);
+        self::assertTrue($payload['message_data']['is_secure']);
+        self::assertSame('otp-request-123', $payload['request_id']);
+    }
+
+    public function testSendTextSerializesObjectsAndGeneratesDefaults(): void
+    {
+        $history = [];
+        $api = $this->makeApi([
+            new Response(200, [], '{"message_id":"message-123","error_data":null}'),
+        ], $history);
+        $markup = new ReplyMarkup([
+            [new InlineKeyboardButton('Open Bale', url: 'https://bale.ai')],
+        ]);
+
+        $response = $api->sendText('09123456789', 'Hello', $markup, fileId: 'file-123');
+        $payload = json_decode((string) $history[0]['request']->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        self::assertTrue($response->isSuccessful());
+        self::assertSame('989123456789', $payload['phone_number']);
+        self::assertSame('Hello', $payload['message_data']['message']['text']);
+        self::assertSame('file-123', $payload['message_data']['message']['file_id']);
+        self::assertSame([
+            'inline_keyboard' => [[['text' => 'Open Bale', 'url' => 'https://bale.ai']]],
+        ], $payload['message_data']['message']['reply_markup']);
+        self::assertFalse($payload['message_data']['is_secure']);
+        self::assertMatchesRegularExpression('/\\A[a-f0-9]{32}\\z/', $payload['request_id']);
+    }
+
+    public function testSendSecureTextSetsSecurityAndAcceptsApiMarkupArray(): void
+    {
+        $history = [];
+        $api = $this->makeApi([
+            new Response(200, [], '{"message_id":"message-123","error_data":null}'),
+        ], $history);
+        $markup = [
+            'inline_keyboard' => [[['text' => 'Open Bale', 'url' => 'https://bale.ai']]],
+        ];
+
+        $response = $api->sendSecureText('989123456789', 'Private', $markup, 'file-456', 'secure-request-123');
+        $payload = json_decode((string) $history[0]['request']->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        self::assertTrue($response->isSuccessful());
+        self::assertSame('file-456', $payload['message_data']['message']['file_id']);
+        self::assertSame($markup, $payload['message_data']['message']['reply_markup']);
+        self::assertTrue($payload['message_data']['is_secure']);
+        self::assertSame('secure-request-123', $payload['request_id']);
     }
 
     public function testSafirLevelErrorsAreAvailableOnSuccessfulHttpResponse(): void

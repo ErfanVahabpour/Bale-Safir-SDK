@@ -5,6 +5,10 @@ namespace EFive\Bale\Safir;
 use EFive\Bale\Safir\Exceptions\InvalidRequestException;
 use EFive\Bale\Safir\Exceptions\MissingBotIdException;
 use EFive\Bale\Safir\FileUpload\InputFile;
+use EFive\Bale\Safir\Objects\Message;
+use EFive\Bale\Safir\Objects\MessageData;
+use EFive\Bale\Safir\Objects\OTPMessage;
+use EFive\Bale\Safir\Objects\ReplyMarkup;
 use EFive\Bale\Safir\Objects\SendMessageResponse;
 use EFive\Bale\Safir\Objects\UploadFileResponse;
 use GuzzleHttp\ClientInterface;
@@ -38,7 +42,7 @@ final class Api
     /**
      * Send a documented Safir message payload.
      *
-     * @param array{phone_number:string, message_data:array, bot_id?:int|string, request_id?:string} $params
+     * @param array{phone_number:string, message_data:array|MessageData, bot_id?:int|string, request_id?:string} $params
      */
     public function sendMessage(array $params): SendMessageResponse
     {
@@ -47,6 +51,10 @@ final class Api
         }
 
         $params['phone_number'] = self::normalizePhoneNumber(trim($params['phone_number']));
+
+        if (($params['message_data'] ?? null) instanceof MessageData) {
+            $params['message_data'] = $params['message_data']->toArray();
+        }
 
         if (! isset($params['message_data']) || ! is_array($params['message_data'])) {
             throw new InvalidRequestException('message_data must be an array.');
@@ -67,6 +75,65 @@ final class Api
         }
 
         return $this->client->sendMessage($params);
+    }
+
+    /**
+     * Send an OTP message. A random six-digit code and request ID are generated when omitted.
+     */
+    public function sendOtp(
+        string $phoneNumber,
+        string|int|null $code = null,
+        bool $isSecure = false,
+        ?string $requestId = null
+    ): SendMessageResponse {
+        $otp = $code ?? random_int(100000, 999999);
+
+        return $this->sendMessage([
+            'phone_number' => $phoneNumber,
+            'request_id' => self::resolveRequestId($requestId),
+            'message_data' => new MessageData(
+                otpMessage: new OTPMessage($otp),
+                isSecure: $isSecure
+            ),
+        ]);
+    }
+
+    /**
+     * Send a text or captioned file message, optionally with inline buttons.
+     */
+    public function sendText(
+        string $phoneNumber,
+        string $text,
+        ReplyMarkup|array|null $replyMarkup = null,
+        bool $isSecure = false,
+        ?string $fileId = null,
+        ?string $requestId = null
+    ): SendMessageResponse {
+        return $this->sendMessage([
+            'phone_number' => $phoneNumber,
+            'request_id' => self::resolveRequestId($requestId),
+            'message_data' => new MessageData(
+                message: new Message(
+                    text: $text,
+                    fileId: $fileId,
+                    replyMarkup: self::normalizeReplyMarkup($replyMarkup)
+                ),
+                isSecure: $isSecure
+            ),
+        ]);
+    }
+
+    /**
+     * Send a secure text or captioned file message, optionally with inline buttons.
+     */
+    public function sendSecureText(
+        string $phoneNumber,
+        string $text,
+        ReplyMarkup|array|null $replyMarkup = null,
+        ?string $fileId = null,
+        ?string $requestId = null
+    ): SendMessageResponse {
+        return $this->sendText($phoneNumber, $text, $replyMarkup, true, $fileId, $requestId);
     }
 
     /**
@@ -117,5 +184,19 @@ final class Api
         }
 
         return $phoneNumber;
+    }
+
+    private static function normalizeReplyMarkup(ReplyMarkup|array|null $replyMarkup): ?ReplyMarkup
+    {
+        if ($replyMarkup === null || $replyMarkup instanceof ReplyMarkup) {
+            return $replyMarkup;
+        }
+
+        return ReplyMarkup::fromArray($replyMarkup);
+    }
+
+    private static function resolveRequestId(?string $requestId): string
+    {
+        return $requestId === null || $requestId === '' ? bin2hex(random_bytes(16)) : $requestId;
     }
 }
