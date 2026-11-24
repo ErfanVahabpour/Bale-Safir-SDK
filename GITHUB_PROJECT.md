@@ -50,6 +50,6 @@ MIT was selected for the Safir SDK and added as `LICENSE`; the reference SDK's B
 - `README.md` and `README.fa.md` now provide matching English/Persian setup guides and describe the unreleased local implementation.
 - `PLAN.md` tracks implementation progress and release work.
 - `Examples/` contains standalone samples for text, OTP, and media messages.
-- `.github/workflows/ci.yml` runs the PHPUnit suite across PHP 8.2–8.5 and Laravel 10–13; add a badge after the workflow has run on GitHub.
+- `.github/workflows/ci.yml` runs the PHPUnit suite across PHP 8.2–8.5 and Laravel 10, 12, and 13; Laravel 11's flagged test dependencies are not allowed through Composer's security policy. Add a badge after the workflow passes on GitHub.
 - Packagist version, PHP version, Laravel compatibility, license, and download badges after the first release.
 - Keep the repo public and Issues enabled; use GitHub Projects only if a tracked roadmap board is useful.
