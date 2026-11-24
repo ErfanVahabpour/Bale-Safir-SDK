@@ -67,16 +67,16 @@ The Safir API is a REST service using an organization `api-access-key` header, a
 - Packagist metadata lists `v0.2.0` with MIT and points to release commit `7a0dc4b`.
 - Packagist version and license badges are active in both READMEs.
 
-### 6. Complete documentation and publish patch release — in progress
+### 6. Complete documentation and publish patch release — complete
 
-- Expand both READMEs with the full convenience-method signatures, payload fields, upload stream lifecycle, Laravel settings, response/error details, and troubleshooting.
-- Add runnable-example setup guides in English and Persian.
-- Update release notes and project status for `v0.2.1`.
-- Publish `v0.2.1` after the documentation commit passes repository CI, then verify the tag and Packagist metadata.
+- Expanded both READMEs with convenience-method signatures, payload fields, upload stream lifecycle, Laravel settings, response/error details, and troubleshooting.
+- Added runnable-example setup guides in English and Persian.
+- Updated release notes and project status for `v0.2.1`.
+- Published GitHub release `v0.2.1` from commit `811036a` after repository CI passed; Packagist metadata confirms the tag, commit, and MIT license.
 
 ## Release status
 
-- Current public release before phase 6: `v0.2.0` (MIT), published 2026-11-24.
+- Current public release: `v0.2.1` (MIT), published 2026-11-24.
 - Package install command: `composer require erfanvahabpour/bale-safir-sdk`.
 - Follow-up releases should incorporate user feedback and updates to Safir's API contract; the open documentation ambiguities below remain tracked.
 

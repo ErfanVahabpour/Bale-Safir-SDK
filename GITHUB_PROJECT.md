@@ -43,13 +43,13 @@ MIT was selected for the Safir SDK and added as `LICENSE`; the reference SDK's B
 - Support documentation: `https://docs.bale.ai/safir`
 - Product page: `https://bale.ai/safir`
 - Vendor / author metadata: mirror the existing Bale-Bot-SDK's author details if this is the same maintainer.
-- Published package: [erfanvahabpour/bale-safir-sdk](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk), current public release `v0.2.0` (MIT), published 2026-11-24. Packagist metadata points to release commit `7a0dc4b`.
-- Target patch release: `v0.2.1`; the documentation update is prepared and release verification is pending CI and publication.
+- Published package: [erfanvahabpour/bale-safir-sdk](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk), current public release `v0.2.1` (MIT), published 2026-11-24. Packagist metadata points to release commit `811036a`.
+- GitHub release: [v0.2.1](https://github.com/ErfanVahabpour/Bale-Safir-SDK/releases/tag/v0.2.1), published from commit `811036a` after CI passed.
 
 ## Repository presentation
 
-- `README.md` and `README.fa.md` provide matching English/Persian API and setup guides; v0.2.1 expands method, object, upload, Laravel, errors, and troubleshooting references.
-- `PLAN.md` tracks implementation progress and release work.
+- `README.md` and `README.fa.md` provide matching English/Persian API and setup guides for the public `v0.2.1` release, including method, object, upload, Laravel, error, and troubleshooting references.
+- `PLAN.md` tracks implementation progress and release history.
 - `Examples/` contains standalone samples for text, OTP, and media messages, with English and Persian run guides.
 - `.github/workflows/ci.yml` runs the PHPUnit suite across PHP 8.2–8.5 and Laravel 12–13; its passing status is shown in both READMEs. Laravel 10–11 test dependencies are blocked by Composer's security policy.
 - Packagist version and license badges are active in both READMEs.
