@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Normalize local Iranian mobile numbers beginning with `09` to Safir's required `98...` format.
+
 ## 0.1.0 — 2026-11-24
 
 - Initial public release of the Bale Safir PHP SDK.

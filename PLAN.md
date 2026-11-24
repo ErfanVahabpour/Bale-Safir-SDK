@@ -111,10 +111,10 @@ This is a starting shape, not a requirement to preserve every Bot SDK abstractio
 - The Laravel integration works with the package's declared Laravel versions without leaking bot SDK config or facade names.
 - Readmes and examples describe only implemented Safir endpoints; no Bot API methods are presented as Safir features.
 
-## Contract items to verify before release
+## Contract notes
 
 1. `template_message` appears in examples but is omitted from the `MessageData` field table.
-2. Phone-number prose allows both `98` and `+98`, while the main request table says the number starts with `98`; one valid example appears to have a different digit count.
+2. Safir requires Iranian numbers in international `98...` or `+98...` form and lists domestic `09...` numbers as invalid. The SDK converts exact 11-digit local Iranian mobile inputs to `98...`.
 3. The upload section names `error`, while the general error section says services expose `error_data`.
 4. OTP examples omit `error_data`, so response fields must be treated as optional.
 

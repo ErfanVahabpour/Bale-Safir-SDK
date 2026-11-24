@@ -40,6 +40,8 @@ composer require erfanvahabpour/bale-safir-sdk
 
 For development from a local checkout, install dependencies with `composer install`.
 
+Safir expects Iranian recipient numbers in international format (`98...` or `+98...`). An 11-digit local mobile number beginning with `09` is converted to `98...` automatically; other formats are passed through unchanged.
+
 ## Configuration
 
 Set your organization API access key and numeric bot ID in the environment:
@@ -217,4 +219,4 @@ composer test
 - [Safir product page](https://bale.ai/safir)
 - [Related Bale Bot SDK](https://github.com/ErfanVahabpour/Bale-Bot-SDK)
 
-Safir's documentation currently gives conflicting phone-number formatting examples and describes upload errors as both `error` and `error_data`. This SDK preserves the supplied phone string and exposes the raw response so applications can handle the documented response variants.
+Safir's documentation describes upload errors under both `error` and `error_data`; the SDK accepts both response variants.

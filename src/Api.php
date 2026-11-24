@@ -46,6 +46,8 @@ final class Api
             throw new InvalidRequestException('A non-empty phone_number string is required.');
         }
 
+        $params['phone_number'] = self::normalizePhoneNumber(trim($params['phone_number']));
+
         if (! isset($params['message_data']) || ! is_array($params['message_data'])) {
             throw new InvalidRequestException('message_data must be an array.');
         }
@@ -64,7 +66,6 @@ final class Api
             }
         }
 
-        // Keep phone-number formatting as supplied; Safir's docs show conflicting examples.
         return $this->client->sendMessage($params);
     }
 
@@ -106,5 +107,15 @@ final class Api
         }
 
         return $validated;
+    }
+
+    private static function normalizePhoneNumber(string $phoneNumber): string
+    {
+        // Safir requires Iranian numbers in international format. Convert local mobile form (09xxxxxxxxx).
+        if (preg_match('/\\A09\\d{9}\\z/', $phoneNumber) === 1) {
+            return '98'.substr($phoneNumber, 1);
+        }
+
+        return $phoneNumber;
     }
 }

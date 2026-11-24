@@ -94,6 +94,25 @@ final class ApiTest extends TestCase
         ], json_decode((string) $request->getBody(), true, 512, JSON_THROW_ON_ERROR));
     }
 
+    public function testLocalIranianMobileNumberIsNormalizedForSafir(): void
+    {
+        $history = [];
+        $api = $this->makeApi([
+            new Response(200, [], '{"message_id":"message-123","error_data":null}'),
+        ], $history);
+
+        $response = $api->sendMessage([
+            'phone_number' => '09123456789',
+            'message_data' => ['message' => ['text' => 'Hello']],
+        ]);
+
+        self::assertTrue($response->isSuccessful());
+        self::assertSame(
+            '989123456789',
+            json_decode((string) $history[0]['request']->getBody(), true, 512, JSON_THROW_ON_ERROR)['phone_number']
+        );
+    }
+
     public function testSafirLevelErrorsAreAvailableOnSuccessfulHttpResponse(): void
     {
         $history = [];
