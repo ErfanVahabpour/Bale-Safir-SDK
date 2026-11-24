@@ -1,0 +1,64 @@
+{
+    "name": "erfanvahabpour/bale-safir-sdk",
+    "description": "Unofficial PHP SDK for the Bale Safir messaging API, with file uploads and Laravel support.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "bale",
+        "bale-safir",
+        "safir-api",
+        "php",
+        "php-sdk",
+        "laravel",
+        "messaging"
+    ],
+    "authors": [
+        {
+            "name": "Erfan Vahabpour",
+            "email": "erfanvahabpour@yahoo.com",
+            "homepage": "https://erfanvahabpour.ir/",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://docs.bale.ai/safir",
+    "support": {
+        "docs": "https://docs.bale.ai/safir",
+        "issues": "https://github.com/ErfanVahabpour/Bale-Safir-SDK/issues"
+    },
+    "require": {
+        "php": "^8.2",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/psr7": "^2.7"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.38 || ^9.0 || ^10.0 || ^11.0",
+        "phpunit/phpunit": "^10.5 || ^11.5"
+    },
+    "suggest": {
+        "illuminate/support": "Required for Laravel integration (Laravel 10 through 13)."
+    },
+    "autoload": {
+        "psr-4": {
+            "EFive\\Bale\\Safir\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EFive\\Bale\\Safir\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "laravel": {
+            "aliases": {
+                "Safir": "EFive\\Bale\\Safir\\Laravel\\Facades\\Safir"
+            },
+            "providers": [
+                "EFive\\Bale\\Safir\\Laravel\\SafirServiceProvider"
+            ]
+        }
+    }
+}
