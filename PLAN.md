@@ -64,7 +64,7 @@ The Safir API is a REST service using an organization `api-access-key` header, a
 - PHPUnit coverage uses mocked HTTP responses for request encoding, file uploads, Safir and HTTP errors, malformed responses, input validation, and Laravel provider/facade resolution.
 - GitHub Actions covers PHP 8.2 through 8.5 and Laravel 12 and 13 using matching Testbench versions. Local tests passed on PHP 8.5.13 with Laravel 13. Laravel 10 and 11 test dependencies are currently blocked by Composer security advisories, so CI keeps those advisory checks enabled and tests the installable Laravel lines.
 - Release `v0.2.0` includes phone-number normalization, convenience send methods, and serializable message payload objects.
-- The package is published at [Packagist](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk); verify the new version after pushing its tag.
+- Packagist metadata now lists `v0.2.0` with MIT and points to release commit `7a0dc4b`.
 - Packagist version and license badges are active in both READMEs.
 
 ## Release status

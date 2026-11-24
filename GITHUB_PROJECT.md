@@ -43,7 +43,7 @@ MIT was selected for the Safir SDK and added as `LICENSE`; the reference SDK's B
 - Support documentation: `https://docs.bale.ai/safir`
 - Product page: `https://bale.ai/safir`
 - Vendor / author metadata: mirror the existing Bale-Bot-SDK's author details if this is the same maintainer.
-- Published package: [erfanvahabpour/bale-safir-sdk](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk), current release `v0.2.0` (MIT), published 2026-11-24.
+- Published package: [erfanvahabpour/bale-safir-sdk](https://packagist.org/packages/erfanvahabpour/bale-safir-sdk), current release `v0.2.0` (MIT), published 2026-11-24. Packagist metadata points to release commit `7a0dc4b`.
 
 ## Repository presentation
 
